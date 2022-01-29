@@ -1,0 +1,3 @@
+dist/*.class
+dist/libengine.so
+NativeInterface.h
