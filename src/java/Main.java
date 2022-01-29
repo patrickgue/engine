@@ -8,8 +8,10 @@ public class Main
     {
 	try
 	{
-	    UIManager.setLookAndFeel(
-		UIManager.getSystemLookAndFeelClassName());
+
+	    // Use the system look and feel for the swing application
+            String className = "com.sun.java.swing.plaf.motif.MotifLookAndFeel"; // UIManager.getSystemLookAndFeelClassName();
+            UIManager.setLookAndFeel(className);
 	}
 	catch(Exception e)
 	{}
@@ -18,9 +20,6 @@ public class Main
 
     public static void main(String args[])
     {
-	
-	
-	new NativeInterface().sayHello();
 	new Main();
     }
 }

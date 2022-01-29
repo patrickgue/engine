@@ -8,9 +8,12 @@ TEST_SRC=test.c
 TEST_OBJ=test.o
 TEST_LDFLAGS=-lengine -L.
 
-JAVA_HOME=/usr/local/openjdk17
+CFLAGS=-g
 
-JNI_CFLAGS+=-fPIC -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/freebsd -shared
+#JAVA_HOME=/usr/local/openjdk17
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+
+JNI_CFLAGS+=-fPIC -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -shared
 
 
 all:$(STATIC_LIB)
