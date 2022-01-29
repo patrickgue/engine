@@ -1,4 +1,4 @@
-CC=clang
+
 SRCS=engine.c
 OBJS=$(SRCS:.c=.o)
 STATIC_LIB=libengine.a

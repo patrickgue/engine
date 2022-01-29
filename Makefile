@@ -2,13 +2,16 @@ all:engine editor
 
 
 engine:
-	make -C src/c
+	$(MAKE) -C src/c test && ./src/c/test
 
-editor:
-	make -C src/java
+
+editor:jni
+	java -Djava.library.path=./src/java/dist -cp ./src/java/dist Main
 
 jni:
-	make- C src/java jni
+	$(MAKE) -C src/java jni
+	$(MAKE) -C src/c jni
+	$(MAKE) -C src/java
 
 clean:
 	make -C src/c clean
