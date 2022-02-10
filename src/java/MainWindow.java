@@ -17,7 +17,7 @@ public class MainWindow extends JFrame
     private JTextField nameField, versionField;
 
     private TilesPanel tilesTab;
-    
+    private MapPanel mapTab;
 
 
 
@@ -37,21 +37,11 @@ public class MainWindow extends JFrame
 	this.tilesTab = new TilesPanel(this.dataManager);
 	this.tabs.addTab("Tiles", null, this.tilesTab, null);
 
-        this.mapsTab = new JPanel();
+        this.mapsTab = new MapPanel();
 	this.tabs.addTab("Map", null, this.mapsTab, null);
 
 
-	
-	
-	
-	this.button = new JButton("Click Me!");
-
-/*	this.button.addActionListener(e -> {
-		System.out.println("Java-Side: " + this.inf.sayHello(10));
-
-		});*/
-
-	mapsTab.add(button);
+        
 	
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.setVisible(true);
