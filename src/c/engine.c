@@ -65,9 +65,7 @@ en_tile map_get_tile(engine_runtime *runtime, int x, int y)
 }
 
 
-void debug_stdout(engine_runtime *runtime) {
-    printf("Name %s / Version %s\n", runtime->def->name, runtime->def->version);
-}
+
 
 
 void tile_add(engine_definition *def, const char *name, uint8_t flags)
@@ -75,4 +73,34 @@ void tile_add(engine_definition *def, const char *name, uint8_t flags)
     def->tiles = realloc(def->tiles, ++def->tiles_count * sizeof(en_tile));
     strcpy(def->tiles[def->tiles_count - 1].name, name);
     def->tiles[def->tiles_count - 1].flags = flags;
+}
+
+
+void tile_set(engine_definition *def, int i, const char *name, uint8_t flags)
+{
+    assert(i >= 0 && i < def->tiles_count);
+    strcpy(def->tiles[i].name, name);
+    def->tiles[i].flags = flags;
+}
+
+
+
+
+
+/* 
+ * DEBUG
+ */
+
+void debug_stdout(engine_runtime *runtime) {
+    dump_definition(runtime->def);
+}
+
+void dump_definition(engine_definition *definition)
+{
+    int i;
+    printf("Name %s / Version %s\n", definition->name, definition->version);
+    for (i = 0; i < definition->tiles_count; i++)
+    {
+	printf("  | %-16s %d\n", definition->tiles[i].name, definition->tiles[i].flags);
+    }
 }

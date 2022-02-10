@@ -10,19 +10,16 @@ public class MapPanel extends JPanel {
     public MapPanel() {
 	this.setLayout(new BorderLayout());
 
-	this.mainScrollPane = new JScrollPane();
 	this.mainGridPanel = new JPanel();
-	this.mainGridPanel.setLayout(new GridLayout(2,2));
+	this.mainGridPanel.setLayout(new GridLayout(32,32));
 
-	
-	this.mainScrollPane.add(mainGridPanel);
+        
 
-	
-	this.add(this.mainScrollPane, BorderLayout.CENTER);
-
-	for (int i = 0; i < 32; i++) {
+	for (int i = 0; i < 32 * 32; i++) {
 	    this.mainGridPanel.add(new JButton("" + i));
-	    System.out.println(i);
 	}
+
+	this.mainScrollPane = new JScrollPane(this.mainGridPanel);
+	this.add(this.mainScrollPane, BorderLayout.CENTER);
     }
 }

@@ -16,4 +16,7 @@ public class NativeInterface
 
     public native int getTileCount();
     public native Tile getTile(int i);
+
+    public native void addTile(String name, int flags);
+    public native void saveTile(int i, String name, int flags);
 }

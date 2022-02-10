@@ -35,12 +35,14 @@ public class TilesPanel extends JPanel {
 
 	this.tileName = new JTextField();
 	this.tileName.setEnabled(false);
-	this.tileName.addCaretListener(e -> this.tileNameChanged());
+	this.tileName.addCaretListener(e -> this.tileAttributeChanged());
 
 	this.flagSlidCheckbox = new JCheckBox("Solid");
 	this.flagSlidCheckbox.setEnabled(false);
+	this.flagSlidCheckbox.addActionListener(e -> this.tileAttributeChanged());
 	this.flagWaterCheckbox = new JCheckBox("Water");
 	this.flagWaterCheckbox.setEnabled(false);
+	this.flagWaterCheckbox.addActionListener(e -> this.tileAttributeChanged());
 	
 	panelInner.setLayout(new GridLayout(5,1));
 	panelInner.add(new JLabel("Tile Name"));
@@ -79,6 +81,7 @@ public class TilesPanel extends JPanel {
 	    this.removeButton.setEnabled(true);
 	    this.tileName.setText(t.getName());
 	    this.flagSlidCheckbox.setEnabled(true);
+	    System.out.println(index + "> " + t.getFlags() + " > " + ((t.getFlags() & 0b00000001) > 0));
 	    this.flagSlidCheckbox.setSelected((t.getFlags() & 0b00000001) > 0);
 	    this.flagWaterCheckbox.setEnabled(true);
 	    this.flagWaterCheckbox.setSelected((t.getFlags() & 0b00000010) > 0);
@@ -107,14 +110,19 @@ public class TilesPanel extends JPanel {
 	this.tiles.remove(index);
     }
 
-    private void tileNameChanged() {
+    private void tileAttributeChanged() {
 	int index = this.tilesList.getSelectedIndex();
 	if (index != -1) {
 	    this.listModel.set(index, this.tileName.getText());
 	    this.tiles.get(index).setName(this.tileName.getText());
+	    int flags = this.tiles.get(index).getFlags();
+	    System.out.println(this.flagSlidCheckbox.isSelected() + " " + this.flagWaterCheckbox.isSelected());
+	    if (this.flagSlidCheckbox.isSelected()) {flags |= 0b00000001;} else {flags &= 0b11111110;}
+	    if (this.flagWaterCheckbox.isSelected()) {flags |= 0b00000010;} else {flags &= 0b11111101;}
+	    this.tiles.get(index).setFlags(flags);
+	    System.out.println(index + " / " + flags);
 	}
     }
 
-    
 
 }

@@ -9,9 +9,7 @@
 
 int counter = 0;
 
-
-engine_runtime *runtime;
-
+engine_definition *definition;
 
 JNIEXPORT jstring JNICALL Java_NativeInterface_sayHello(JNIEnv *env, jobject thisObject, jint i)
 {
@@ -23,8 +21,7 @@ JNIEXPORT jstring JNICALL Java_NativeInterface_sayHello(JNIEnv *env, jobject thi
 
 
 JNIEXPORT void JNICALL Java_NativeInterface_initExample(JNIEnv *env, jobject thisObject) {
-    engine_definition *def = example_def();
-    runtime = runtime_init(def);
+    definition = example_def();
 }
 
 /*
@@ -33,8 +30,8 @@ JNIEXPORT void JNICALL Java_NativeInterface_initExample(JNIEnv *env, jobject thi
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_NativeInterface_getName (JNIEnv *env, jobject thisObject) {
-    assert(runtime != NULL);
-    return (*env)->NewStringUTF(env, runtime->def->name);
+    assert(definition != NULL);
+    return (*env)->NewStringUTF(env, definition->name);
 }
 
 /*
@@ -43,8 +40,8 @@ JNIEXPORT jstring JNICALL Java_NativeInterface_getName (JNIEnv *env, jobject thi
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_NativeInterface_getVersion (JNIEnv *env, jobject thisObject) {
-    assert(runtime != NULL);
-    return (*env)->NewStringUTF(env, runtime->def->version);
+    assert(definition != NULL);
+    return (*env)->NewStringUTF(env, definition->version);
 }
 
 /*
@@ -53,8 +50,8 @@ JNIEXPORT jstring JNICALL Java_NativeInterface_getVersion (JNIEnv *env, jobject 
  * Signature: (Ljava/lang/String;Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_NativeInterface_setNameAndVersion (JNIEnv *env, jobject thisObject, jstring name, jstring version) {
-    engine_set_name_version(runtime->def, (*env)->GetStringUTFChars(env, name, 0), (*env)->GetStringUTFChars(env, version, 0));
-    debug_stdout(runtime);
+    engine_set_name_version(definition, (*env)->GetStringUTFChars(env, name, 0), (*env)->GetStringUTFChars(env, version, 0));
+    dump_definition(definition);
 }
 
 
@@ -66,7 +63,7 @@ JNIEXPORT void JNICALL Java_NativeInterface_setNameAndVersion (JNIEnv *env, jobj
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_NativeInterface_getTileCount (JNIEnv *env, jobject thisObject) {
-    return runtime->def->tiles_count;
+    return definition->tiles_count;
 }
 
 /*
@@ -76,7 +73,7 @@ JNIEXPORT jint JNICALL Java_NativeInterface_getTileCount (JNIEnv *env, jobject t
  */
 JNIEXPORT jobject JNICALL Java_NativeInterface_getTile (JNIEnv *env, jobject thisObject, jint index)
 {
-    en_tile tile = runtime->def->tiles[index];
+    en_tile tile = definition->tiles[index];
     jclass tileClass = (*env)->FindClass(env, "Tile");
     assert(tileClass != NULL);
     jfieldID nameId = (*env)->GetFieldID(env, tileClass, "name", "Ljava/lang/String;");
@@ -88,4 +85,15 @@ JNIEXPORT jobject JNICALL Java_NativeInterface_getTile (JNIEnv *env, jobject thi
     (*env)->SetIntField(env, tile_obj, flagsId, tile.flags);
     (*env)->SetObjectField(env, tile_obj, nameId, (*env)->NewStringUTF(env, tile.name));
     return tile_obj;
+}
+
+
+JNIEXPORT void JNICALL Java_NativeInterface_addTile (JNIEnv *env, jobject thisObject, jstring name, jint flag)
+{
+    tile_add(definition, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff);
+}
+
+JNIEXPORT void JNICALL Java_NativeInterface_saveTile (JNIEnv *env, jobject thisObject, jint i, jstring name, jint flag)
+{
+    tile_set(definition, i, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff);
 }

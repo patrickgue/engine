@@ -44,10 +44,11 @@ void runtime_set_active_map(engine_runtime *, int);
 en_tile map_get_tile(engine_runtime *, int, int);
 
 void tile_add(engine_definition *, const char *, uint8_t);
-
+void tile_set(engine_definition *, int i, const char *, uint8_t);
 
 void engine_set_name_version(engine_definition *, const char*, const char *);
 
 void debug_stdout(engine_runtime *);
+void dump_definition(engine_definition *);
 
 #endif
