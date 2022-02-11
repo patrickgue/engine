@@ -1,7 +1,9 @@
 import javax.swing.*;
+import javax.swing.border.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.*;
+import java.awt.event.*;
 
 public class TilesPanel extends JPanel {
 
@@ -10,10 +12,10 @@ public class TilesPanel extends JPanel {
     private DefaultListModel listModel;
     private JTextField tileName;
     private List<Tile> tiles;
-    private JButton addButton, removeButton;
+    private JButton addButton, removeButton, setTileNameButton;
 
-    private JCheckBox flagSlidCheckbox;
-    private JCheckBox flagWaterCheckbox;
+    private JCheckBox flagSlidCheckbox, flagWaterCheckbox;
+    private JPanel tileNamePanel;
     
     public TilesPanel(EngineDataManager dataManager) {
 	JPanel panel = new JPanel(),
@@ -33,10 +35,17 @@ public class TilesPanel extends JPanel {
 	this.add(tilesList, BorderLayout.CENTER);
 
 
-	this.tileName = new JTextField();
+	this.tileNamePanel = new JPanel();
+	this.tileNamePanel.setLayout(new BorderLayout());
+	this.tileNamePanel.setBorder(new EmptyBorder(0,0,0,0));
+	this.tileName = new JTextField(7);
 	this.tileName.setEnabled(false);
-	this.tileName.addCaretListener(e -> this.tileAttributeChanged());
+	this.setTileNameButton = new JButton("set");
+	this.setTileNameButton.addActionListener(e -> this.tileAttributeChanged());
 
+	this.tileNamePanel.add(this.tileName, BorderLayout.CENTER);
+	this.tileNamePanel.add(this.setTileNameButton, BorderLayout.EAST);
+	
 	this.flagSlidCheckbox = new JCheckBox("Solid");
 	this.flagSlidCheckbox.setEnabled(false);
 	this.flagSlidCheckbox.addActionListener(e -> this.tileAttributeChanged());
@@ -44,9 +53,9 @@ public class TilesPanel extends JPanel {
 	this.flagWaterCheckbox.setEnabled(false);
 	this.flagWaterCheckbox.addActionListener(e -> this.tileAttributeChanged());
 	
-	panelInner.setLayout(new GridLayout(5,1));
+	panelInner.setLayout(new GridLayout(4,1));
 	panelInner.add(new JLabel("Tile Name"));
-	panelInner.add(this.tileName);
+	panelInner.add(this.tileNamePanel);
 	panelInner.add(this.flagSlidCheckbox);
 	panelInner.add(this.flagWaterCheckbox);
 	panel.add(panelInner);
@@ -81,7 +90,6 @@ public class TilesPanel extends JPanel {
 	    this.removeButton.setEnabled(true);
 	    this.tileName.setText(t.getName());
 	    this.flagSlidCheckbox.setEnabled(true);
-	    System.out.println(index + "> " + t.getFlags() + " > " + ((t.getFlags() & 0b00000001) > 0));
 	    this.flagSlidCheckbox.setSelected((t.getFlags() & 0b00000001) > 0);
 	    this.flagWaterCheckbox.setEnabled(true);
 	    this.flagWaterCheckbox.setSelected((t.getFlags() & 0b00000010) > 0);
@@ -101,6 +109,8 @@ public class TilesPanel extends JPanel {
 	this.tiles.add(new Tile("New Tile", 0));
 	this.listModel.addElement("New Tile");
 	this.tilesList.setSelectedIndex(this.listModel.size() - 1);
+
+	this.dataManager.setTiles(this.tiles);
     }
 
     private void removeTile() {
@@ -108,6 +118,8 @@ public class TilesPanel extends JPanel {
 	this.tilesList.clearSelection();
 	this.listModel.remove(index);
 	this.tiles.remove(index);
+
+	this.dataManager.setTiles(this.tiles);
     }
 
     private void tileAttributeChanged() {
@@ -116,11 +128,11 @@ public class TilesPanel extends JPanel {
 	    this.listModel.set(index, this.tileName.getText());
 	    this.tiles.get(index).setName(this.tileName.getText());
 	    int flags = this.tiles.get(index).getFlags();
-	    System.out.println(this.flagSlidCheckbox.isSelected() + " " + this.flagWaterCheckbox.isSelected());
 	    if (this.flagSlidCheckbox.isSelected()) {flags |= 0b00000001;} else {flags &= 0b11111110;}
 	    if (this.flagWaterCheckbox.isSelected()) {flags |= 0b00000010;} else {flags &= 0b11111101;}
 	    this.tiles.get(index).setFlags(flags);
-	    System.out.println(index + " / " + flags);
+
+	    this.dataManager.setTiles(this.tiles);
 	}
     }
 

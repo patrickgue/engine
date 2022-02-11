@@ -17,6 +17,16 @@ public class NativeInterface
     public native int getTileCount();
     public native Tile getTile(int i);
 
+
+    public native void clearTiles();
     public native void addTile(String name, int flags);
     public native void saveTile(int i, String name, int flags);
+
+    
+    public native int getMapCount();
+    public native GameMap getMap(int i);
+    public native void addMap(GameMap map);
+    public native void clearMaps();
+
+    public native void dumpEngineDefinition();
 }

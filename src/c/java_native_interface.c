@@ -51,7 +51,6 @@ JNIEXPORT jstring JNICALL Java_NativeInterface_getVersion (JNIEnv *env, jobject 
  */
 JNIEXPORT void JNICALL Java_NativeInterface_setNameAndVersion (JNIEnv *env, jobject thisObject, jstring name, jstring version) {
     engine_set_name_version(definition, (*env)->GetStringUTFChars(env, name, 0), (*env)->GetStringUTFChars(env, version, 0));
-    dump_definition(definition);
 }
 
 
@@ -96,4 +95,81 @@ JNIEXPORT void JNICALL Java_NativeInterface_addTile (JNIEnv *env, jobject thisOb
 JNIEXPORT void JNICALL Java_NativeInterface_saveTile (JNIEnv *env, jobject thisObject, jint i, jstring name, jint flag)
 {
     tile_set(definition, i, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff);
+}
+
+JNIEXPORT void JNICALL Java_NativeInterface_clearTiles (JNIEnv *env, jobject thisObject)
+{
+    tile_clear_all(definition);
+}
+
+
+
+
+
+/* ======= *
+ * = MAP = *
+ * ======= */
+JNIEXPORT jint JNICALL Java_NativeInterface_getMapCount (JNIEnv *env, jobject thisObject)
+{
+    return definition->maps_count;
+}
+
+
+JNIEXPORT jobject JNICALL Java_NativeInterface_getMap (JNIEnv *env, jobject thisObject, jint index)
+{
+    en_map map = definition->maps[index];
+    int i;
+    jclass intArrClass = (*env)->FindClass(env, "[I");
+    jclass mapClass = (*env)->FindClass(env, "GameMap");
+    assert(mapClass != NULL);
+    
+    jfieldID nameId = (*env)->GetFieldID(env, mapClass, "name", "Ljava/lang/String;");
+    assert(nameId != NULL);
+    jfieldID mapId = (*env)->GetFieldID(env, mapClass, "map", "[[I");
+    assert(mapId != NULL);
+    jfieldID mapWidthId = (*env)->GetFieldID(env, mapClass, "mapWidth", "I");
+    assert(mapWidthId != NULL);
+    jfieldID mapHeightId = (*env)->GetFieldID(env, mapClass, "mapHeight", "I");
+    assert(mapHeightId != NULL);
+
+    jintArray iniVal = (*env)->NewIntArray(env, map.map_width);
+    jobjectArray outer = (*env)->NewObjectArray(env, map.map_height, intArrClass, iniVal);
+
+    for (i = 0; i < map.map_height; i++)
+    {
+	jintArray inner = (*env)->NewIntArray(env, map.map_width);
+	(*env)->SetIntArrayRegion(env, inner, 0, map.map_width, (const int*) map.map[i]);
+	(*env)->SetObjectArrayElement(env, outer, i, inner);
+	(*env)->DeleteLocalRef(env, inner);
+    }
+	
+    jobject map_obj = (*env)->AllocObject(env, mapClass);
+    assert(map_obj != NULL);
+    (*env)->SetObjectField(env, map_obj, nameId, (*env)->NewStringUTF(env, map.name));
+    (*env)->SetIntField(env, map_obj, mapWidthId, map.map_width);
+    (*env)->SetIntField(env, map_obj, mapHeightId, map.map_height);
+    (*env)->SetObjectField(env, map_obj, mapId, outer);
+
+    return map_obj;
+
+}
+
+JNIEXPORT void JNICALL Java_NativeInterface_addMap (JNIEnv *env, jobject thisObject, jobject mapObject)
+{
+
+}
+
+
+JNIEXPORT void JNICALL Java_NativeInterface_clearMaps (JNIEnv *, jobject)
+{
+    map_clear(definition);
+}
+
+
+
+
+
+JNIEXPORT void JNICALL Java_NativeInterface_dumpEngineDefinition (JNIEnv *env, jobject thisObject)
+{
+    dump_definition(definition);
 }

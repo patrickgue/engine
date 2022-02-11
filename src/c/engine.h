@@ -45,6 +45,12 @@ en_tile map_get_tile(engine_runtime *, int, int);
 
 void tile_add(engine_definition *, const char *, uint8_t);
 void tile_set(engine_definition *, int i, const char *, uint8_t);
+void tile_clear_all(engine_definition *);
+
+void map_add(engine_definition *, en_map *);
+void map_set(engine_definition *, int, en_map *);
+void map_clear(engine_definition *);
+
 
 void engine_set_name_version(engine_definition *, const char*, const char *);
 

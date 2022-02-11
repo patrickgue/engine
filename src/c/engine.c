@@ -15,12 +15,13 @@ engine_definition *example_def()
 
     def->maps = malloc(sizeof(en_map));
     def->maps[0].map_height = def->maps[0].map_width = 32;
-    def->maps_count = 2;
+    def->maps_count = 1;
 
     for (i = 0; i < 32; i++)
     {
 	def->maps[0].map[i][i] = 1;
     }
+    strcpy(def->maps[0].name, "Example Map");
 
     def->tiles = malloc(2 * sizeof(en_tile));
     strcpy(def->tiles[0].name, "Grass");
@@ -68,6 +69,7 @@ en_tile map_get_tile(engine_runtime *runtime, int x, int y)
 
 
 
+
 void tile_add(engine_definition *def, const char *name, uint8_t flags)
 {
     def->tiles = realloc(def->tiles, ++def->tiles_count * sizeof(en_tile));
@@ -84,7 +86,25 @@ void tile_set(engine_definition *def, int i, const char *name, uint8_t flags)
 }
 
 
+void tile_clear_all(engine_definition *def)
+{
+    if (def->tiles != NULL)
+	free(def->tiles);
 
+    def->tiles = malloc(0);
+    def->tiles_count = 0;
+}
+
+
+void map_clear(engine_definition *definition)
+{
+    if (definition->maps != NULL)
+    {
+	free(definition->maps);
+    }
+    definition->maps = malloc(0);
+    definition->maps_count = 0;
+}
 
 
 /* 

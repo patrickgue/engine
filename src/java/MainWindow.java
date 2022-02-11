@@ -37,7 +37,7 @@ public class MainWindow extends JFrame
 	this.tilesTab = new TilesPanel(this.dataManager);
 	this.tabs.addTab("Tiles", null, this.tilesTab, null);
 
-        this.mapsTab = new MapPanel();
+        this.mapsTab = new MapPanel(this.dataManager);
 	this.tabs.addTab("Map", null, this.mapsTab, null);
 
 
