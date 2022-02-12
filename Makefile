@@ -2,11 +2,11 @@ all:engine editor
 
 
 engine:
-	$(MAKE) -C src/c test && ./src/c/test
-
+	$(MAKE) -C src/c test
+	./src/c/test
 
 editor:jni
-	java -Djava.library.path=./src/java/dist -cp ./src/java/dist Editor
+	./src/java/dist/editor
 
 jni:
 	$(MAKE) -C src/java jni

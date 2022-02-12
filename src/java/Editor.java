@@ -10,7 +10,8 @@ public class Editor
 	{
 
 	    // Use the system look and feel for the swing application
-            String className = "com.sun.java.swing.plaf.motif.MotifLookAndFeel"; // UIManager.getSystemLookAndFeelClassName();
+            String className = "com.sun.java.swing.plaf.motif.MotifLookAndFeel"; // 
+	    //String className = UIManager.getSystemLookAndFeelClassName(); // UIManager.getCrossPlatformLookAndFeelClassName();
             UIManager.setLookAndFeel(className);
 	}
 	catch(Exception e)

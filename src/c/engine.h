@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#define MAGIC "ENG"
 #define NAME_LENGTH 64
 
 typedef struct s_en_map
@@ -55,6 +56,8 @@ void map_clear(engine_definition *);
 
 
 void engine_set_name_version(engine_definition *, const char*, const char *);
+void engine_store(engine_definition *, const char *);
+void engine_load(engine_definition *, const char *);
 
 void debug_stdout(engine_runtime *);
 void dump_definition(engine_definition *);

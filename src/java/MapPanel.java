@@ -56,12 +56,13 @@ public class MapPanel extends JPanel {
 	
 	this.selectionPanel = new JPanel();
 	this.selectionPanel.setLayout(new BorderLayout());
+	this.selectionPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 	
         this.mapSelection = new JComboBox();
 	this.mapNameField = new JTextField(10);
-	this.mapNameSet = new JButton("set name");
-	this.mapAdd = new JButton("add");
-	this.mapRemove = new JButton("remove");
+	this.mapNameSet = new JButton("Set Name");
+	this.mapAdd = new JButton("Add");
+	this.mapRemove = new JButton("Remove");
 	
 	this.mapSelection.addActionListener(e -> this.selectMap());
 	this.mapAdd.addActionListener(e -> this.addMap());

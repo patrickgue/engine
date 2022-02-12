@@ -28,5 +28,8 @@ public class NativeInterface
     public native void addMap(String name, int map[][], int mapWidth, int mapHeight);
     public native void clearMaps();
 
+    public native void store(String uri);
+    public native void load(String uri);
+
     public native void dumpEngineDefinition();
 }

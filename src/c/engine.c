@@ -117,6 +117,36 @@ void map_add(engine_definition *def, en_map *map)
     def->maps[def->maps_count - 1] = *map;
 }
 
+void engine_store(engine_definition *def, const char *uri)
+{
+    FILE *f = fopen(uri, "w");
+    assert(f != NULL);
+    fwrite(MAGIC, sizeof(char), strlen(MAGIC), f);
+    fwrite(def->name, sizeof(char), NAME_LENGTH, f);
+    fwrite(def->version, sizeof(char), NAME_LENGTH, f);
+    fwrite(&def->tiles_count, sizeof(uint16_t), 1, f);
+    fwrite(&def->maps_count, sizeof(uint16_t), 1, f);
+    fwrite(def->tiles, sizeof(en_tile), def->tiles_count, f);
+    fwrite(def->maps, sizeof(en_map), def->maps_count, f);
+    fclose(f);
+}
+
+void engine_load(engine_definition *def, const char *uri)
+{
+    FILE *f = fopen(uri, "r");
+    char magic[4];
+    assert(f != NULL);
+    fread(magic, sizeof(char), strlen(MAGIC), f);
+    assert(strcmp(magic, MAGIC) == 0);
+    fread(def->name, sizeof(char), NAME_LENGTH, f);
+    fread(def->version, sizeof(char), NAME_LENGTH, f);
+    fread(&def->tiles_count, sizeof(uint16_t), 1, f);
+    fread(&def->maps_count, sizeof(uint16_t), 1, f);
+    fread(def->tiles, sizeof(en_tile), def->tiles_count, f);
+    fread(def->maps, sizeof(en_map), def->maps_count, f);
+    fclose(f);
+}
+
 /* 
  * DEBUG
  */

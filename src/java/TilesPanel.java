@@ -40,7 +40,7 @@ public class TilesPanel extends JPanel {
 	this.tileNamePanel.setBorder(new EmptyBorder(0,0,0,0));
 	this.tileName = new JTextField(7);
 	this.tileName.setEnabled(false);
-	this.setTileNameButton = new JButton("set");
+	this.setTileNameButton = new JButton("Set");
 	this.setTileNameButton.addActionListener(e -> this.tileAttributeChanged());
 
 	this.tileNamePanel.add(this.tileName, BorderLayout.CENTER);
@@ -67,18 +67,26 @@ public class TilesPanel extends JPanel {
 	this.tilesList.addListSelectionListener(e -> this.tileSelected());
 
 
+	buttonBar.setLayout(new BorderLayout());
+	buttonBar.setBorder(BorderFactory.createRaisedBevelBorder());
+	JPanel rightPanel = new JPanel(), leftPanel = new JPanel();
 	this.addButton = new JButton("Add");
 	this.removeButton = new JButton("Remove");
 
 	this.removeButton.setEnabled(false);
 
-	buttonBar.add(this.addButton);
+	//leftPanel.add(new JLabel("Tiles"));
+
+	rightPanel.add(this.addButton);
 	addButton.addActionListener(e -> this.addTile());
 	
-	buttonBar.add(this.removeButton);
+	rightPanel.add(this.removeButton);
 	removeButton.addActionListener(e -> this.removeTile());
 
-	this.add(buttonBar, BorderLayout.SOUTH);
+	buttonBar.add(leftPanel, BorderLayout.WEST);
+        buttonBar.add(rightPanel, BorderLayout.EAST);
+	
+	this.add(buttonBar, BorderLayout.NORTH);
 
     }
 

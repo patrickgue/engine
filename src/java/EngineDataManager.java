@@ -1,7 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class EngineDataManager {
     private NativeInterface inf;
     private String name, version;
@@ -58,6 +57,7 @@ public class EngineDataManager {
 	    this.inf.addMap(m.getName(), m.getMap(), m.getMapWidth(), m.getMapHeight());
 	}
 	this.inf.dumpEngineDefinition();
+	this.inf.store("/tmp/test.def");
     }
 
     public List<Tile> getTiles() {
@@ -74,5 +74,9 @@ public class EngineDataManager {
 
     public void setMaps(List<GameMap> maps) {
 	this.maps = maps;
+    }
+
+    public void openFile(String path) {
+	System.out.println(path);
     }
 }

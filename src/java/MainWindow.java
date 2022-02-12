@@ -3,12 +3,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 
 public class MainWindow extends JFrame
 {
 
-    private final int WINDOW_WIDTH = 640, WINDOW_HEIGHT = 480;
+    private final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
     
     private JButton button;
     private EngineDataManager dataManager;
@@ -39,10 +40,21 @@ public class MainWindow extends JFrame
 
         this.mapsTab = new MapPanel(this.dataManager);
 	this.tabs.addTab("Map", null, this.mapsTab, null);
-
-
         
-	
+	ImageIcon img = new ImageIcon("./icon.png");
+	this.setIconImage(img.getImage());
+
+
+
+	if (Taskbar.isTaskbarSupported()) {
+	    Taskbar taskbar = Taskbar.getTaskbar();
+	    if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+		taskbar.setIconImage(img.getImage());
+	    }
+	}
+
+
+
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.setVisible(true);
 	this.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
@@ -61,7 +73,7 @@ public class MainWindow extends JFrame
 
 	JMenuItem openItem = new JMenuItem("Open");
 	openItem.setMnemonic(KeyEvent.VK_O);
-	openItem.addActionListener(e -> System.out.println("Open"));
+	openItem.addActionListener(e -> this.openFile());
 
 	JMenuItem exitItem = new JMenuItem("Exit");
 	exitItem.setMnemonic(KeyEvent.VK_X);
@@ -134,6 +146,23 @@ public class MainWindow extends JFrame
 	this.dataManager.setVersion(this.versionField.getText());
 
 	this.dataManager.store();
+    }
+
+    private void openFile() {
+	java.awt.FileDialog fileChooser = new java.awt.FileDialog((java.awt.Frame) null);
+	fileChooser.setVisible(true);
+
+	final File[] files = fileChooser.getFiles();
+	if ( files.length == 0) {
+	    return;
+	}
+
+	File file = files[0];
+
+	if (file.exists()) {
+	    this.dataManager.openFile(file.toURI().toString().replace("file:", ""));
+	}
+
     }
 
 }

@@ -192,7 +192,15 @@ JNIEXPORT void JNICALL Java_NativeInterface_clearMaps (JNIEnv *env, jobject this
 }
 
 
+JNIEXPORT void JNICALL Java_NativeInterface_store (JNIEnv *env, jobject thisObject, jstring uri)
+{
+    engine_store(definition, (*env)->GetStringUTFChars(env, uri, 0));
+}
 
+JNIEXPORT void JNICALL Java_NativeInterface_load (JNIEnv *env, jobject thisObject, jstring uri)
+{
+    engine_load(definition, (*env)->GetStringUTFChars(env, uri, 0));
+}
 
 
 JNIEXPORT void JNICALL Java_NativeInterface_dumpEngineDefinition (JNIEnv *env, jobject thisObject)
