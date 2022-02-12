@@ -6,7 +6,7 @@ engine:
 
 
 editor:jni
-	java -Djava.library.path=./src/java/dist -cp ./src/java/dist Main
+	java -Djava.library.path=./src/java/dist -cp ./src/java/dist Editor
 
 jni:
 	$(MAKE) -C src/java jni

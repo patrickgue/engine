@@ -1,10 +1,10 @@
 
 import javax.swing.UIManager;
 
-public class Main
+public class Editor
 {
 
-    public Main()
+    public Editor()
     {
 	try
 	{
@@ -20,6 +20,6 @@ public class Main
 
     public static void main(String args[])
     {
-	new Main();
+	new Editor();
     }
 }

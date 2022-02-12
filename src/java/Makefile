@@ -1,7 +1,7 @@
 JC=javac
 
 OUT=dist
-SRCS=Main.java MainWindow.java NativeInterface.java About.java EngineDataManager.java Tile.java GameMap.java TilesPanel.java MapPanel.java
+SRCS=Editor.java MainWindow.java NativeInterface.java About.java EngineDataManager.java Tile.java GameMap.java TilesPanel.java MapPanel.java
 CLASS=$(SRCS:%.java=$(OUT)/%.class)
 
 JCFLAGS=-d $(OUT)
@@ -20,6 +20,6 @@ NativeInterface.h:
 
 
 run:
-	java -cp dist -Djava.library.path=./dist Main
+	java -cp dist -Djava.library.path=./dist Editor
 clean:
 	rm -f dist/*.class NativeInterface.h
