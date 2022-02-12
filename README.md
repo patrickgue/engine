@@ -20,10 +20,10 @@ make engine
 
 **Editor**
 
-The first time: Edit `src/java/Makefile` and set the correct `JAVA_HOME` path for your system. 
+The first time: If no JAVA_HOME environment variable is defined, either define it or create a file `src/c/.java_home` with the full path inside.
 
 `
-make editor
+make
 `
 
 Notice! The editor part only builds with GNU Make, on BSD-Like Operating systems it has to be built with `gmake editor`

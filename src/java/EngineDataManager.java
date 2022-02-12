@@ -24,10 +24,8 @@ public class EngineDataManager {
 	    this.tiles.add(this.inf.getTile(i));
 	}
 	int mapsCount = this.inf.getMapCount();
-	System.out.println("MapsCount: " + mapsCount);
 	for (int i = 0; i < mapsCount; i++) {
 	    GameMap map = this.inf.getMap(i);
-	    System.out.println("  " + map.getName());
 	    this.maps.add(map);
 	}
     }
@@ -54,6 +52,10 @@ public class EngineDataManager {
 	this.inf.clearTiles();
 	for (Tile t : this.tiles) {
 	    this.inf.addTile(t.getName(), t.getFlags());
+	}
+	this.inf.clearMaps();
+	for (GameMap m : this.maps) {
+	    this.inf.addMap(m.getName(), m.getMap(), m.getMapWidth(), m.getMapHeight());
 	}
 	this.inf.dumpEngineDefinition();
     }

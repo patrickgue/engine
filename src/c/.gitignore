@@ -2,3 +2,4 @@
 *.a
 *.so
 test
+.java_home

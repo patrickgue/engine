@@ -25,7 +25,7 @@ public class NativeInterface
     
     public native int getMapCount();
     public native GameMap getMap(int i);
-    public native void addMap(GameMap map);
+    public native void addMap(String name, int map[][], int mapWidth, int mapHeight);
     public native void clearMaps();
 
     public native void dumpEngineDefinition();

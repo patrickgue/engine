@@ -16,7 +16,13 @@ public class GameMap {
 	this.mapHeight = mapHeight;
     }
 
-
+    public GameMap(String name, int mapWidth, int mapHeight) {
+	this.name = name;
+	this.map = new int[32][32];
+	this.mapWidth = mapWidth;
+	this.mapHeight = mapHeight;
+    }
+    
     public String getName() {
 	return this.name;
     }

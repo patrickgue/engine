@@ -3,24 +3,26 @@
 
 #include <stdint.h>
 
+#define NAME_LENGTH 64
+
 typedef struct s_en_map
 {
-    char name[64];
+    char name[NAME_LENGTH];
     uint8_t map[32][32]; // TODO make resizable
     uint16_t map_width, map_height;
 } en_map;
 
 typedef struct s_en_tiles
 {
-    char name[32];
+    char name[NAME_LENGTH];
     uint8_t flags;
 } en_tile;
 
 
 typedef struct s_engine_def
 {
-    char name[64];
-    char version[32];
+    char name[NAME_LENGTH];
+    char version[NAME_LENGTH];
     en_map *maps;
     uint16_t maps_count;
     en_tile *tiles;

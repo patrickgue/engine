@@ -102,12 +102,8 @@ public class MainWindow extends JFrame
 
 	JPanel insideInfoPanel = new JPanel();
 	
-        this.nameField = new JTextField();
-	//nameField.setPlaceholder("Name");
-	this.versionField = new JTextField();
-	//versionField.setPlaceholder("Version");
-
-
+        this.nameField = new JTextField(10);
+	this.versionField = new JTextField(10);
 
 	this.infoPanel = new JPanel();
 	this.infoPanel.setLayout(new FlowLayout());

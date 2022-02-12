@@ -1,3 +1,4 @@
 dist/*.class
 dist/libengine.so
+dist/libengine.dylib*
 NativeInterface.h

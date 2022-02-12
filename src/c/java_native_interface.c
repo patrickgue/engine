@@ -3,6 +3,8 @@
 #include <jni.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
+#include <stdlib.h>
 #include "../java/NativeInterface.h"
 
 #include "engine.h"
@@ -118,7 +120,7 @@ JNIEXPORT jint JNICALL Java_NativeInterface_getMapCount (JNIEnv *env, jobject th
 JNIEXPORT jobject JNICALL Java_NativeInterface_getMap (JNIEnv *env, jobject thisObject, jint index)
 {
     en_map map = definition->maps[index];
-    int i;
+    int i, j;
     jclass intArrClass = (*env)->FindClass(env, "[I");
     jclass mapClass = (*env)->FindClass(env, "GameMap");
     assert(mapClass != NULL);
@@ -137,10 +139,16 @@ JNIEXPORT jobject JNICALL Java_NativeInterface_getMap (JNIEnv *env, jobject this
 
     for (i = 0; i < map.map_height; i++)
     {
+	int *index = malloc(map.map_width * sizeof(int));
+	for (j = 0; j < map.map_width; j++)
+	{
+	    index[j] = map.map[i][j];
+	}
 	jintArray inner = (*env)->NewIntArray(env, map.map_width);
-	(*env)->SetIntArrayRegion(env, inner, 0, map.map_width, (const int*) map.map[i]);
+	(*env)->SetIntArrayRegion(env, inner, 0, map.map_width, (const int*) index);
 	(*env)->SetObjectArrayElement(env, outer, i, inner);
 	(*env)->DeleteLocalRef(env, inner);
+	free(index);
     }
 	
     jobject map_obj = (*env)->AllocObject(env, mapClass);
@@ -154,13 +162,31 @@ JNIEXPORT jobject JNICALL Java_NativeInterface_getMap (JNIEnv *env, jobject this
 
 }
 
-JNIEXPORT void JNICALL Java_NativeInterface_addMap (JNIEnv *env, jobject thisObject, jobject mapObject)
+JNIEXPORT void JNICALL Java_NativeInterface_addMap (JNIEnv *env, jobject thisObject, jstring name, jobjectArray arr, jint map_width, jint map_height)
 {
+    int x, y, i;
+    en_map *map = malloc(sizeof(en_map));
 
+    strncpy(map->name, (*env)->GetStringUTFChars(env, name, 0), NAME_LENGTH);
+    map->map_width = map_width;
+    map->map_height = map_height;
+    
+    for (y = 0; y < map_height; y++)
+    {
+	jintArray intarr = (*env)->GetObjectArrayElement(env, arr, y);
+	jint *body = (*env)->GetIntArrayElements(env, intarr, 0);
+	for (x = 0; x < map_width; x++)
+	{
+	    i = body[x];
+	    map->map[x][y] = i;
+	}
+    }
+
+    map_add(definition, map);
 }
 
 
-JNIEXPORT void JNICALL Java_NativeInterface_clearMaps (JNIEnv *, jobject)
+JNIEXPORT void JNICALL Java_NativeInterface_clearMaps (JNIEnv *env, jobject thisObject)
 {
     map_clear(definition);
 }
