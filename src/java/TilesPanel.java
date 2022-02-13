@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 
-public class TilesPanel extends JPanel {
+public class TilesPanel extends JPanel implements EditPanel {
 
     private EngineDataManager dataManager;
     private JList tilesList;
@@ -118,7 +118,7 @@ public class TilesPanel extends JPanel {
 	this.listModel.addElement("New Tile");
 	this.tilesList.setSelectedIndex(this.listModel.size() - 1);
 
-	this.dataManager.setTiles(this.tiles);
+	this.broadcastChange();
     }
 
     private void removeTile() {
@@ -127,7 +127,7 @@ public class TilesPanel extends JPanel {
 	this.listModel.remove(index);
 	this.tiles.remove(index);
 
-	this.dataManager.setTiles(this.tiles);
+	this.broadcastChange();
     }
 
     private void tileAttributeChanged() {
@@ -143,6 +143,12 @@ public class TilesPanel extends JPanel {
 	    this.dataManager.setTiles(this.tiles);
 	}
     }
+
+
+    public void broadcastChange() {
+	this.dataManager.setTiles(this.tiles);
+    }
+    public void processChanges() {}
 
 
 }

@@ -1,10 +1,10 @@
 JC=javac
 
 OUT=dist
-SRCS=Editor.java MainWindow.java NativeInterface.java About.java EngineDataManager.java Tile.java GameMap.java TilesPanel.java MapPanel.java Alert.java
+SRCS=Editor.java MainWindow.java NativeInterface.java About.java EngineDataManager.java Tile.java GameMap.java TilesPanel.java MapPanel.java Alert.java EditPanel.java
 CLASS=$(SRCS:%.java=$(OUT)/%.class)
 
-JCFLAGS+=-d $(OUT) -Xlint:unchecked
+JCFLAGS+=-d $(OUT)
 
 all:jni $(CLASS)
 

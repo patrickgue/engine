@@ -3,10 +3,10 @@ import java.awt.*;
 import java.util.List;
 
 
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements EditPanel {
     private JScrollPane mainScrollPane;
     private JPanel mainGridPanel, propertiesPanel, selectionPanel;
-    private JComboBox mapSelection = new JComboBox();
+    private JComboBox mapSelection = new JComboBox(), tileSelection;
     private JTextField mapNameField;
     private JButton mapNameSet, mapAdd, mapRemove;
 
@@ -33,6 +33,7 @@ public class MapPanel extends JPanel {
 	this.add(this.propertiesPanel, BorderLayout.EAST);
 
 	this.initSelectionPanel();
+	this.initPropertiesPanel();
     }
 
     private void initGrid(GameMap map) {
@@ -42,9 +43,11 @@ public class MapPanel extends JPanel {
 	for (int y = 0; y < 32; y++) {
 	    for (int x = 0; x < 32; x++) {
 		int tileIndex = map.getMap()[x][y];
+		final int xx = x;
+		final int yy = y;
 		this.mapButtons[x][y] = new JButton(dataManager.getTiles().get(tileIndex).getName());
 		this.mainGridPanel.add(this.mapButtons[x][y]);
-		this.mapButtons[x][y].addActionListener(e -> {});
+		this.mapButtons[x][y].addActionListener(e -> this.selectGridElement(xx, yy));
 	    }
 	}
 	this.mainScrollPane.setVisible(true);
@@ -83,6 +86,52 @@ public class MapPanel extends JPanel {
 	this.add(this.selectionPanel, BorderLayout.NORTH);
     }
 
+    private void initPropertiesPanel() {
+	JPanel innerPanel = new JPanel();
+	innerPanel.setLayout(new GridLayout(5,1));
+	this.propertiesPanel.setLayout(new FlowLayout());
+	this.tileSelection = new JComboBox();
+	this.tileSelection.addActionListener(e -> {
+		if (this.mapSelection.isEnabled()
+		    && this.mapSelection.getSelectedIndex() > 0 /* 0 is no valid selection */
+		    && this.mapSelection.getItemCount() > 0) {
+		    this.tileSelectionChanged();
+		}
+	    });
+	
+	
+	this.updateTileComboBox();
+
+	innerPanel.add(new JLabel("Tile"));
+	innerPanel.add(this.tileSelection);
+	this.tileSelection.setEnabled(false);
+
+
+	this.propertiesPanel.add(innerPanel);
+    }
+
+    private void selectGridElement(int x, int y) {
+	this.selectionX = x;
+	this.selectionY = y;
+
+	GameMap map = this.getCurrentMap();
+	this.tileSelection.setEnabled(true);
+	this.tileSelection.setSelectedIndex(map.getMap()[x][y]);
+    }
+
+    private void tileSelectionChanged() {
+	this.getCurrentMap().getMap()[this.selectionX][this.selectionY] = this.tileSelection.getSelectedIndex();
+	this.initGrid(this.getCurrentMap());
+	this.broadcastChange();
+
+    }
+
+    private void updateTileComboBox() {
+	for (Tile t : this.dataManager.getTiles()) {
+	    this.tileSelection.addItem(t.getName());
+	}
+    }
+
     private void setSelectionComboBoxLabels() {
 	this.mapSelection.removeAllItems();
 	this.mapSelection.addItem("<<Select>>");
@@ -100,7 +149,7 @@ public class MapPanel extends JPanel {
 	    this.mainGridPanel.removeAll();
 	    this.mainScrollPane.setVisible(true);
 	} else if (index > 0) {
-	    GameMap map = this.maps.get(index - 1);
+	    GameMap map = this.getCurrentMap();
 	    this.mapNameField.setText(map.getName());
 	    this.mapNameField.setEnabled(true);
 	    this.mapNameSet.setEnabled(true);
@@ -125,7 +174,7 @@ public class MapPanel extends JPanel {
 
 
     private void changeMapName() {
-	if (this.mapNameField.getText() != null || this.mapNameField.getText().length() == 0) {
+	if (this.mapNameField.getText() == null || this.mapNameField.getText().length() == 0) {
 	    new Alert("Name is empty");
 	    return;
 	}
@@ -135,7 +184,17 @@ public class MapPanel extends JPanel {
 	this.mapSelection.setSelectedIndex(currentIndex);
     }
     
-    private void broadcastChange() {
+    public void broadcastChange() {
 	this.dataManager.setMaps(this.maps);
+    }
+
+    public void processChanges() {
+	this.updateTileComboBox();
+    }
+
+    private GameMap getCurrentMap() {
+	int index = this.mapSelection.getSelectedIndex();
+	GameMap map = this.maps.get(index - 1);
+	return map;
     }
 }
