@@ -16,6 +16,8 @@ public class TilesPanel extends JPanel implements EditPanel {
 
     private JCheckBox flagSlidCheckbox, flagWaterCheckbox;
     private JPanel tileNamePanel;
+
+    private ChangesEvent changesEvent;
     
     public TilesPanel(EngineDataManager dataManager) {
 	JPanel panel = new JPanel(),
@@ -147,8 +149,15 @@ public class TilesPanel extends JPanel implements EditPanel {
 
     public void broadcastChange() {
 	this.dataManager.setTiles(this.tiles);
+
+	if (this.changesEvent != null) {
+	    this.changesEvent.changesRegistered();
+	}
     }
     public void processChanges() {}
 
+    public void listenForChanges(ChangesEvent e) {
+	this.changesEvent = e;
+    }
 
 }

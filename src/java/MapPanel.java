@@ -16,6 +16,7 @@ public class MapPanel extends JPanel implements EditPanel {
 
     private int selectionX, selectionY;
 
+    private ChangesEvent changesEvent;
 
     public MapPanel(EngineDataManager dataManager) {
 	this.dataManager = dataManager;
@@ -42,17 +43,37 @@ public class MapPanel extends JPanel implements EditPanel {
         this.mapButtons = new JButton[32][32];
 	for (int y = 0; y < 32; y++) {
 	    for (int x = 0; x < 32; x++) {
-		int tileIndex = map.getMap()[x][y];
 		final int xx = x;
 		final int yy = y;
-		this.mapButtons[x][y] = new JButton(dataManager.getTiles().get(tileIndex).getName());
+		this.mapButtons[x][y] = new JButton("");
+		this.mapButtons[x][y].setPreferredSize(new Dimension(70, 70));
 		this.mainGridPanel.add(this.mapButtons[x][y]);
-		this.mapButtons[x][y].addActionListener(e -> this.selectGridElement(xx, yy));
+		this.mapButtons[x][y].addActionListener(e -> {
+			this.selectGridElement(xx, yy);
+		    });
 	    }
 	}
+	this.setGridButtonLabels(map);
 	this.mainScrollPane.setVisible(true);
     }
 
+    private void setGridButtonLabels(GameMap map) {
+	for (int y = 0; y < 32; y++) {
+	    for (int x = 0; x < 32; x++) {
+		int tileIndex = map.getMap()[x][y];
+		if (tileIndex >= 0 && tileIndex < dataManager.getTiles().size()) {
+		    if (y == this.selectionY && x == this.selectionX) {
+			this.mapButtons[x][y].setText("[" + dataManager.getTiles().get(tileIndex).getName() + "]");
+		    } else {
+			this.mapButtons[x][y].setText(dataManager.getTiles().get(tileIndex).getName());
+		    }
+		}
+		
+	    }
+	}
+    }
+
+    
     private void initSelectionPanel() {
 	JPanel leftSection = new JPanel();
 	JPanel rightSection = new JPanel();
@@ -121,12 +142,13 @@ public class MapPanel extends JPanel implements EditPanel {
 
     private void tileSelectionChanged() {
 	this.getCurrentMap().getMap()[this.selectionX][this.selectionY] = this.tileSelection.getSelectedIndex();
-	this.initGrid(this.getCurrentMap());
+	this.setGridButtonLabels(this.getCurrentMap());
 	this.broadcastChange();
 
     }
 
     private void updateTileComboBox() {
+	this.tileSelection.removeAllItems();
 	for (Tile t : this.dataManager.getTiles()) {
 	    this.tileSelection.addItem(t.getName());
 	}
@@ -186,6 +208,10 @@ public class MapPanel extends JPanel implements EditPanel {
     
     public void broadcastChange() {
 	this.dataManager.setMaps(this.maps);
+
+	if (this.changesEvent != null) {
+	    this.changesEvent.changesRegistered();
+	}
     }
 
     public void processChanges() {
@@ -197,4 +223,9 @@ public class MapPanel extends JPanel implements EditPanel {
 	GameMap map = this.maps.get(index - 1);
 	return map;
     }
+
+    public void listenForChanges(ChangesEvent e) {
+	this.changesEvent = e;
+    }
+
 }

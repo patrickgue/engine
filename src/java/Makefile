@@ -1,7 +1,7 @@
 JC=javac
 
 OUT=dist
-SRCS=Editor.java MainWindow.java NativeInterface.java About.java EngineDataManager.java Tile.java GameMap.java TilesPanel.java MapPanel.java Alert.java EditPanel.java
+SRCS=Editor.java MainWindow.java NativeInterface.java About.java EngineDataManager.java Tile.java GameMap.java TilesPanel.java MapPanel.java Alert.java EditPanel.java ChangesEvent.java
 CLASS=$(SRCS:%.java=$(OUT)/%.class)
 
 JCFLAGS+=-d $(OUT)
