@@ -15,7 +15,8 @@ public class MapPanel extends JPanel implements EditPanel {
     private JButton mapButtons[][];
 
     private int selectionX, selectionY;
-
+    private boolean disableMapTileChange = false;
+    
     private ChangesEvent changesEvent;
 
     public MapPanel(EngineDataManager dataManager) {
@@ -141,17 +142,23 @@ public class MapPanel extends JPanel implements EditPanel {
     }
 
     private void tileSelectionChanged() {
-	this.getCurrentMap().getMap()[this.selectionX][this.selectionY] = this.tileSelection.getSelectedIndex();
-	this.setGridButtonLabels(this.getCurrentMap());
-	this.broadcastChange();
-
+	if (!this.disableMapTileChange) {
+	    int newIndex = this.tileSelection.getSelectedIndex();
+	    if (newIndex >= 0) {
+		this.getCurrentMap().getMap()[this.selectionX][this.selectionY] = newIndex;
+		this.setGridButtonLabels(this.getCurrentMap());
+		this.broadcastChange();
+	    }
+	}
     }
 
     private void updateTileComboBox() {
+	this.disableMapTileChange = true;
 	this.tileSelection.removeAllItems();
 	for (Tile t : this.dataManager.getTiles()) {
 	    this.tileSelection.addItem(t.getName());
 	}
+	this.disableMapTileChange = false;
     }
 
     private void setSelectionComboBoxLabels() {

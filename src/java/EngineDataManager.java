@@ -79,4 +79,17 @@ public class EngineDataManager {
     public void openFile(String path) {
 	System.out.println(path);
     }
+
+    public boolean isTileIndexUsedInMaps(int i) {
+	for (GameMap map : this.maps) {
+	    for (int y = 0; y < map.getMapHeight(); y++) {
+		for (int x = 0; x < map.getMapWidth(); x++) {
+		    if (map.getMap()[x][y] == i) {
+			return true;
+		    }
+		}
+	    }
+	}
+	return false;
+    }
 }

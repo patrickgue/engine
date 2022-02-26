@@ -125,11 +125,15 @@ public class TilesPanel extends JPanel implements EditPanel {
 
     private void removeTile() {
 	int index = this.tilesList.getSelectedIndex();
-	this.tilesList.clearSelection();
-	this.listModel.remove(index);
-	this.tiles.remove(index);
+	if (this.dataManager.isTileIndexUsedInMaps(index)) {
+	    new Alert("Can't delete, tile \"" + this.tiles.get(index).getName() + "\" is in use");
+	} else {
+	    this.tilesList.clearSelection();
+	    this.listModel.remove(index);
+	    this.tiles.remove(index);
 
-	this.broadcastChange();
+	    this.broadcastChange();
+	}
     }
 
     private void tileAttributeChanged() {
@@ -143,6 +147,7 @@ public class TilesPanel extends JPanel implements EditPanel {
 	    this.tiles.get(index).setFlags(flags);
 
 	    this.dataManager.setTiles(this.tiles);
+	    this.broadcastChange();
 	}
     }
 
