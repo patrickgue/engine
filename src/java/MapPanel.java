@@ -93,6 +93,7 @@ public class MapPanel extends JPanel implements EditPanel {
 	this.mapSelection.addActionListener(e -> this.selectMap());
 	this.mapAdd.addActionListener(e -> this.addMap());
 	this.mapNameSet.addActionListener(e -> this.changeMapName());
+	this.mapRemove.addActionListener(e -> this.removeMap());
 
 	leftSection.add(this.mapSelection);
 	leftSection.add(this.mapNameField);
@@ -200,6 +201,13 @@ public class MapPanel extends JPanel implements EditPanel {
 	this.setSelectionComboBoxLabels();
 	this.mapSelection.setSelectedIndex(this.maps.size());
 	this.broadcastChange();
+    }
+
+    private void removeMap() {
+	int selectedIndex = this.mapSelection.getSelectedIndex();
+	this.mapSelection.setSelectedIndex(0);
+	this.dataManager.getMaps().remove(selectedIndex-1);
+	this.setSelectionComboBoxLabels();
     }
 
 
