@@ -30,9 +30,15 @@ engine_definition *example_def()
     def->tiles = malloc(2 * sizeof(en_tile));
     strncpy(def->tiles[0].name, "Grass", NAME_LENGTH);
     def->tiles[0].flags = 0;
+    def->tiles[0].r = 0;
+    def->tiles[0].g = 200;
+    def->tiles[0].b = 20;
 
     strncpy(def->tiles[1].name, "Water", NAME_LENGTH);
     def->tiles[1].flags = 0;
+    def->tiles[1].r = 0;
+    def->tiles[1].g = 20;
+    def->tiles[1].b = 200;
 
     def->tiles_count = 2;
     
@@ -74,19 +80,25 @@ en_tile map_get_tile(engine_runtime *runtime, int x, int y)
 
 
 
-void tile_add(engine_definition *def, const char *name, uint8_t flags)
+void tile_add(engine_definition *def, const char *name, uint8_t flags, uint8_t r, uint8_t g, uint8_t b)
 {
     def->tiles = realloc(def->tiles, ++def->tiles_count * sizeof(en_tile));
     strncpy(def->tiles[def->tiles_count - 1].name, name, NAME_LENGTH);
     def->tiles[def->tiles_count - 1].flags = flags;
+    def->tiles[def->tiles_count - 1].r = r;
+    def->tiles[def->tiles_count - 1].g = g;
+    def->tiles[def->tiles_count - 1].b = b;
 }
 
 
-void tile_set(engine_definition *def, int i, const char *name, uint8_t flags)
+void tile_set(engine_definition *def, int i, const char *name, uint8_t flags, uint8_t r, uint8_t g, uint8_t b)
 {
     assert(i >= 0 && i < def->tiles_count);
     strncpy(def->tiles[i].name, name, NAME_LENGTH);
     def->tiles[i].flags = flags;
+    def->tiles[i].r = r;
+    def->tiles[i].g = g;
+    def->tiles[i].b = b;
 }
 
 

@@ -19,8 +19,8 @@ public class NativeInterface
 
 
     public native void clearTiles();
-    public native void addTile(String name, int flags);
-    public native void saveTile(int i, String name, int flags);
+    public native void addTile(String name, int flags, int r, int g, int b);
+    public native void saveTile(int i, String name, int flags, int r, int g, int b);
 
     
     public native int getMapCount();

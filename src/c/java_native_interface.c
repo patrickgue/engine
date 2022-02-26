@@ -83,20 +83,32 @@ JNIEXPORT jobject JNICALL Java_NativeInterface_getTile (JNIEnv *env, jobject thi
     assert(flagsId != NULL);
     jobject tile_obj = (*env)->AllocObject(env, tileClass);
     assert(tile_obj != NULL);
+
+    jfieldID rId = (*env)->GetFieldID(env, tileClass, "r", "I");
+    assert(rId != NULL);
+    jfieldID gId = (*env)->GetFieldID(env, tileClass, "g", "I");
+    assert(gId != NULL);
+    jfieldID bId = (*env)->GetFieldID(env, tileClass, "b", "I");
+    assert(bId != NULL);
+
+
     (*env)->SetIntField(env, tile_obj, flagsId, tile.flags);
+    (*env)->SetIntField(env, tile_obj, rId, tile.r);
+    (*env)->SetIntField(env, tile_obj, gId, tile.g);
+    (*env)->SetIntField(env, tile_obj, bId, tile.b);
     (*env)->SetObjectField(env, tile_obj, nameId, (*env)->NewStringUTF(env, tile.name));
     return tile_obj;
 }
 
 
-JNIEXPORT void JNICALL Java_NativeInterface_addTile (JNIEnv *env, jobject thisObject, jstring name, jint flag)
+JNIEXPORT void JNICALL Java_NativeInterface_addTile (JNIEnv *env, jobject thisObject, jstring name, jint flag, jint r, jint g, jint b)
 {
-    tile_add(definition, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff);
+    tile_add(definition, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff, r, g, b);
 }
 
-JNIEXPORT void JNICALL Java_NativeInterface_saveTile (JNIEnv *env, jobject thisObject, jint i, jstring name, jint flag)
+JNIEXPORT void JNICALL Java_NativeInterface_saveTile (JNIEnv *env, jobject thisObject, jint i, jstring name, jint flag, jint r, jint g, jint b)
 {
-    tile_set(definition, i, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff);
+    tile_set(definition, i, (*env)->GetStringUTFChars(env, name, 0), flag & 0xff, r, g, b);
 }
 
 JNIEXPORT void JNICALL Java_NativeInterface_clearTiles (JNIEnv *env, jobject thisObject)

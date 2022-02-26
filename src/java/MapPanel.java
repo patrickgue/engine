@@ -63,6 +63,7 @@ public class MapPanel extends JPanel implements EditPanel {
 	    for (int x = 0; x < 32; x++) {
 		int tileIndex = map.getMap()[x][y];
 		if (tileIndex >= 0 && tileIndex < dataManager.getTiles().size()) {
+		    this.mapButtons[x][y].setBackground(dataManager.getTiles().get(tileIndex).getColor());
 		    if (y == this.selectionY && x == this.selectionX) {
 			this.mapButtons[x][y].setText("[" + dataManager.getTiles().get(tileIndex).getName() + "]");
 		    } else {

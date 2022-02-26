@@ -50,7 +50,7 @@ public class EngineDataManager {
 	this.inf.setNameAndVersion(this.name, this.version);
 	this.inf.clearTiles();
 	for (Tile t : this.tiles) {
-	    this.inf.addTile(t.getName(), t.getFlags());
+	    this.inf.addTile(t.getName(), t.getFlags(), t.getR(), t.getG(), t.getB());
 	}
 	this.inf.clearMaps();
 	for (GameMap m : this.maps) {

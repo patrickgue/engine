@@ -12,7 +12,7 @@ public class TilesPanel extends JPanel implements EditPanel {
     private DefaultListModel listModel;
     private JTextField tileName;
     private List<Tile> tiles;
-    private JButton addButton, removeButton, setTileNameButton;
+    private JButton addButton, removeButton, setTileNameButton, selectColorButton;
 
     private JCheckBox flagSlidCheckbox, flagWaterCheckbox;
     private JPanel tileNamePanel;
@@ -54,12 +54,17 @@ public class TilesPanel extends JPanel implements EditPanel {
 	this.flagWaterCheckbox = new JCheckBox("Water");
 	this.flagWaterCheckbox.setEnabled(false);
 	this.flagWaterCheckbox.addActionListener(e -> this.tileAttributeChanged());
+
+	this.selectColorButton = new JButton("Choose Color");
+	this.selectColorButton.setEnabled(false);
+	this.selectColorButton.addActionListener(e -> this.chooseTileColor());
 	
-	panelInner.setLayout(new GridLayout(4,1));
+	panelInner.setLayout(new GridLayout(6,1));
 	panelInner.add(new JLabel("Tile Name"));
 	panelInner.add(this.tileNamePanel);
 	panelInner.add(this.flagSlidCheckbox);
 	panelInner.add(this.flagWaterCheckbox);
+	panelInner.add(this.selectColorButton);
 	panel.add(panelInner);
 	panel.setLayout(new FlowLayout());
 	
@@ -103,6 +108,8 @@ public class TilesPanel extends JPanel implements EditPanel {
 	    this.flagSlidCheckbox.setSelected((t.getFlags() & 0b00000001) > 0);
 	    this.flagWaterCheckbox.setEnabled(true);
 	    this.flagWaterCheckbox.setSelected((t.getFlags() & 0b00000010) > 0);
+	    this.selectColorButton.setEnabled(true);
+	    this.selectColorButton.setBackground(t.getColor());
 	    
 	} else {
 	    this.removeButton.setEnabled(false);
@@ -112,6 +119,8 @@ public class TilesPanel extends JPanel implements EditPanel {
 	    this.flagSlidCheckbox.setSelected(false);
 	    this.flagWaterCheckbox.setEnabled(false);
 	    this.flagWaterCheckbox.setSelected(false);
+	    this.selectColorButton.setEnabled(false);
+	    this.selectColorButton.setBackground(null);
 	}
     }
 
@@ -149,6 +158,27 @@ public class TilesPanel extends JPanel implements EditPanel {
 	    this.dataManager.setTiles(this.tiles);
 	    this.broadcastChange();
 	}
+    }
+
+    private void chooseTileColor() {
+	var frame = new JFrame();
+	var chooseButton = new JButton("Set Color");
+	var colorChooser = new JColorChooser();
+	frame.setLayout(new BorderLayout());
+
+	frame.add(colorChooser, BorderLayout.CENTER);
+	frame.add(chooseButton, BorderLayout.SOUTH);
+	
+	frame.setSize(400,300);
+	frame.setVisible(true);
+
+	chooseButton.addActionListener(e -> {
+		int index = this.tilesList.getSelectedIndex();
+		if (index != -1) {
+		    this.tiles.get(index).setColor(colorChooser.getColor());
+		    this.selectColorButton.setBackground(this.tiles.get(index).getColor());
+		}
+	    });
     }
 
 

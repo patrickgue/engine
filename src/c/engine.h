@@ -16,7 +16,7 @@ typedef struct s_en_map
 typedef struct s_en_tiles
 {
     char name[NAME_LENGTH];
-    uint8_t flags;
+    uint8_t flags, r, g, b;
 } en_tile;
 
 
@@ -46,8 +46,8 @@ void runtime_set_active_map(engine_runtime *, int);
 
 en_tile map_get_tile(engine_runtime *, int, int);
 
-void tile_add(engine_definition *, const char *, uint8_t);
-void tile_set(engine_definition *, int i, const char *, uint8_t);
+void tile_add(engine_definition *, const char *, uint8_t, uint8_t, uint8_t, uint8_t);
+void tile_set(engine_definition *, int i, const char *, uint8_t, uint8_t, uint8_t, uint8_t);
 void tile_clear_all(engine_definition *);
 
 void map_add(engine_definition *, en_map *);

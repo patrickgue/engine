@@ -1,6 +1,8 @@
+import java.awt.Color;
+
 public class Tile {
     private String name;
-    private int flags;
+    private int flags, r, g, b;
 
     public Tile(String name, int flags) {
 	this.name = name;
@@ -26,6 +28,28 @@ public class Tile {
 
     public void setFlags(int flags) {
 	this.flags = flags;
+    }
+
+    public Color getColor() {
+	return new Color(this.r, this.g, this.b);
+    }
+
+    public void setColor(Color c) {
+	this.r = c.getRed();
+	this.g = c.getGreen();
+	this.b = c.getBlue();
+    }
+
+    public int getR() {
+	return this.r;
+    }
+
+    public int getG() {
+	return this.g;
+    }
+
+    public int getB() {
+	return this.b;
     }
 
 }
