@@ -14,16 +14,12 @@ Building the editor and testing is almost as simple:
 
 **Test suite**
 
-`
-make engine
-`
+`make engine`
 
 **Editor**
 
-The first time: If no JAVA_HOME environment variable is defined, either define it or create a file `src/c/.java_home` with the full path inside.
+The first time: If no JAVA_HOME environment variable is defined, either define it or create a file `src/c/.java_home` with the full path to the JVM inside.
 
-`
-make
-`
+`make`
 
-Notice! The editor part only builds with GNU Make, on BSD-Like Operating systems it has to be built with `gmake editor`
+Notice! The editor part only builds with GNU Make, on BSD-Like Operating systems (except macos) it has to be built with `gmake`
