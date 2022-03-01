@@ -9,8 +9,8 @@ public class Editor
 	try
 	{
 	    
-            String className = "com.sun.java.swing.plaf.motif.MotifLookAndFeel"; //
-	    //String className = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
+            //String className = "com.sun.java.swing.plaf.motif.MotifLookAndFeel"; 
+	    String className = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 	    //String className = UIManager.getSystemLookAndFeelClassName(); // UIManager.getCrossPlatformLookAndFeelClassName();
 	    System.out.println(className);
             UIManager.setLookAndFeel(className);

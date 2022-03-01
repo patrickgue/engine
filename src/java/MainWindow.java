@@ -112,6 +112,8 @@ public class MainWindow extends JFrame {
 		this.versionField = new JTextField(10);
 
 		this.infoPanel = new JPanel();
+		this.infoPanel.setBorder(BorderFactory.createMatteBorder(
+                                    0, 0, 0, 1, Color.gray));
 		this.infoPanel.setLayout(new FlowLayout());
 
 		insideInfoPanel = new JPanel();

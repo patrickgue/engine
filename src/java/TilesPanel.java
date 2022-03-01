@@ -75,7 +75,8 @@ public class TilesPanel extends JPanel implements EditPanel {
 
 
 	buttonBar.setLayout(new BorderLayout());
-	buttonBar.setBorder(BorderFactory.createRaisedBevelBorder());
+	buttonBar.setBorder(BorderFactory.createMatteBorder(
+                                    0, 0, 1, 0, Color.gray));
 	JPanel rightPanel = new JPanel(), leftPanel = new JPanel();
 	this.addButton = new JButton("Add");
 	this.removeButton = new JButton("Remove");

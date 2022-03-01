@@ -82,7 +82,8 @@ public class MapPanel extends JPanel implements EditPanel {
 	
 	this.selectionPanel = new JPanel();
 	this.selectionPanel.setLayout(new BorderLayout());
-	this.selectionPanel.setBorder(BorderFactory.createRaisedBevelBorder());
+	this.selectionPanel.setBorder(BorderFactory.createMatteBorder(
+                                    0, 0, 1, 0, Color.gray));
 	
         this.mapSelection = new JComboBox();
 	this.mapNameField = new JTextField(10);
