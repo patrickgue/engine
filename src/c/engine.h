@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "types.h"
+
 #define MAGIC "ENG"
 #define NAME_LENGTH 64
 
@@ -13,11 +15,13 @@ typedef struct s_en_map
     uint16_t map_width, map_height;
 } en_map;
 
-typedef struct s_en_tiles
+typedef struct s_en_tile
 {
     char name[NAME_LENGTH];
-    uint8_t flags, r, g, b;
+    uint8_t flags;
+    color c;
 } en_tile;
+
 
 
 typedef struct s_engine_def
@@ -34,13 +38,16 @@ typedef struct s_engine_runtime
 {
     engine_definition *def;
     uint16_t current_map;
+    uint16_t screen_width, screen_height;
+    vec2d player_pos;
 } engine_runtime;
+
 
 
 
 engine_definition *example_def();
 
-engine_runtime *runtime_init(engine_definition *);
+engine_runtime *runtime_init(engine_definition *, int, int);
 
 void runtime_set_active_map(engine_runtime *, int);
 

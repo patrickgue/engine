@@ -30,15 +30,15 @@ engine_definition *example_def()
     def->tiles = malloc(2 * sizeof(en_tile));
     strncpy(def->tiles[0].name, "Grass", NAME_LENGTH);
     def->tiles[0].flags = 0;
-    def->tiles[0].r = 0;
-    def->tiles[0].g = 200;
-    def->tiles[0].b = 20;
+    def->tiles[0].c.r = 0;
+    def->tiles[0].c.g = 200;
+    def->tiles[0].c.b = 20;
 
     strncpy(def->tiles[1].name, "Water", NAME_LENGTH);
     def->tiles[1].flags = 0;
-    def->tiles[1].r = 0;
-    def->tiles[1].g = 20;
-    def->tiles[1].b = 200;
+    def->tiles[1].c.r = 0;
+    def->tiles[1].c.g = 20;
+    def->tiles[1].c.b = 200;
 
     def->tiles_count = 2;
     
@@ -53,11 +53,13 @@ void engine_set_name_version(engine_definition *def, const char *name, const cha
 }
 
 
-engine_runtime *runtime_init(engine_definition *def)
+engine_runtime *runtime_init(engine_definition *def, int w, int h)
 {
     engine_runtime *runtime = malloc(sizeof(engine_runtime));
     runtime->def = def;
     runtime->current_map = -1;
+    runtime->screen_width = w;
+    runtime->screen_height = h;
     return runtime;
 }
 
@@ -85,9 +87,9 @@ void tile_add(engine_definition *def, const char *name, uint8_t flags, uint8_t r
     def->tiles = realloc(def->tiles, ++def->tiles_count * sizeof(en_tile));
     strncpy(def->tiles[def->tiles_count - 1].name, name, NAME_LENGTH);
     def->tiles[def->tiles_count - 1].flags = flags;
-    def->tiles[def->tiles_count - 1].r = r;
-    def->tiles[def->tiles_count - 1].g = g;
-    def->tiles[def->tiles_count - 1].b = b;
+    def->tiles[def->tiles_count - 1].c.r = r;
+    def->tiles[def->tiles_count - 1].c.g = g;
+    def->tiles[def->tiles_count - 1].c.b = b;
 }
 
 
@@ -96,9 +98,9 @@ void tile_set(engine_definition *def, int i, const char *name, uint8_t flags, ui
     assert(i >= 0 && i < def->tiles_count);
     strncpy(def->tiles[i].name, name, NAME_LENGTH);
     def->tiles[i].flags = flags;
-    def->tiles[i].r = r;
-    def->tiles[i].g = g;
-    def->tiles[i].b = b;
+    def->tiles[i].c.r = r;
+    def->tiles[i].c.g = g;
+    def->tiles[i].c.b = b;
 }
 
 

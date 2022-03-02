@@ -93,9 +93,9 @@ JNIEXPORT jobject JNICALL Java_NativeInterface_getTile (JNIEnv *env, jobject thi
 
 
     (*env)->SetIntField(env, tile_obj, flagsId, tile.flags);
-    (*env)->SetIntField(env, tile_obj, rId, tile.r);
-    (*env)->SetIntField(env, tile_obj, gId, tile.g);
-    (*env)->SetIntField(env, tile_obj, bId, tile.b);
+    (*env)->SetIntField(env, tile_obj, rId, tile.c.r);
+    (*env)->SetIntField(env, tile_obj, gId, tile.c.g);
+    (*env)->SetIntField(env, tile_obj, bId, tile.c.b);
     (*env)->SetObjectField(env, tile_obj, nameId, (*env)->NewStringUTF(env, tile.name));
     return tile_obj;
 }
