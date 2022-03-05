@@ -1,5 +1,5 @@
 
-SRCS=engine.c
+SRCS=engine.c runtime.c
 OBJS=$(SRCS:.c=.o)
 STATIC_LIB=libengine.a
 JNI_SRCS=java_native_interface.c $(SRCS)

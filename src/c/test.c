@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "engine.h"
+#include "runtime.h"
 
 int main(int argc, char **argv)
 {

@@ -8,6 +8,7 @@
 #include "../java/NativeInterface.h"
 
 #include "engine.h"
+#include "runtime.h"
 
 int counter = 0;
 
