@@ -5,7 +5,7 @@
 
 #include "runtime.h"
 
-engine_runtime *runtime_init(engine_definition *def, int w, int h)
+engine_runtime *runtime_init(engine_definition *def, engine_runtime_functions *funcs, int w, int h)
 {
     engine_runtime *runtime = malloc(sizeof(engine_runtime));
     runtime->def = def;

@@ -11,14 +11,14 @@ typedef struct s_engine_runtime
     vec2d player_pos;
 } engine_runtime;
 
-typedef struct s_engine_runtime_native
+typedef struct s_engine_runtime_functions
 {
+    void (*place_sprite)(void);
+} engine_runtime_functions;
 
-}
 
 
-
-engine_runtime *runtime_init(engine_definition*, int, int);
+engine_runtime *runtime_init(engine_definition*, engine_runtime_functions*, int, int);
 void runtime_set_active_map(engine_runtime *, int);
 
 en_tile map_get_tile(engine_runtime *, int, int);
